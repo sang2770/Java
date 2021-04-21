@@ -1,0 +1,2 @@
+Total Of Point:6
+Sum of distance =922.3738553107337
