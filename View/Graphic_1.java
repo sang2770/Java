@@ -20,11 +20,6 @@ public class Graphic_1 extends JFrame implements ActionListener {
 
 	public int width=Constants.width;
 	public int height=Constants.height;
-	public void OutGame()
-	{
-		setDefaultCloseOperation(this.EXIT_ON_CLOSE);
-	}
-	
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub

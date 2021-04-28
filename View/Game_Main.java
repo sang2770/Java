@@ -7,11 +7,13 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
+import java.awt.Image;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -29,7 +31,6 @@ public class Game_Main extends JPanel implements ActionListener {
 	private int dem=0, demX=0, demO=0;
 	public JButton[][] list_btn=new JButton[GameSize][GameSize];
 	JLabel title=null;
-	User user=new User();
 	Game game=new Game();
 	JLabel Name_1=null, Name_2=null, Count_1=null,Count_2=null;
 	public JLabel getName_1() {
@@ -47,13 +48,6 @@ public class Game_Main extends JPanel implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
-		if(e.getActionCommand().equals("Ingame"))
-		{
-			Name_1.setText(user.getText_1().getText());
-			Name_2.setText(user.getText_2().getText());
-			AddGame();
-		}
-		else {
 			String[] test=e.getActionCommand().split("-");
 			int a=Integer.parseInt(test[0]);
 			int b=Integer.parseInt(test[1]);
@@ -76,15 +70,7 @@ public class Game_Main extends JPanel implements ActionListener {
 				}
 				System.out.println("actiond"+dem);
 			}
-		}
-//		Button
-		
-		
-		
-	}
-	public void AddGame()
-	{
-		
+
 	}
 	/*
 	 * User
@@ -107,40 +93,78 @@ public class Game_Main extends JPanel implements ActionListener {
 		Button.setPreferredSize(new Dimension(width, 100));
 		return Button;
 	}
-	public JPanel Login()
-	{
-		JPanel list=user.getList();
-		list.add(Button());
-		return list;
-	}
 	/*
 	 * Main
 	 */
 	public JPanel Inf_1(String s, int dem)
 	{
 		Name_1=new JLabel(s, JLabel.CENTER);
-		Name_1.setBounds(0, 10, 95, 70);
+		Name_1.setPreferredSize(new Dimension(90, 80));
 		Count_1=new JLabel("Count  "+dem, JLabel.CENTER);
-		Count_1.setBounds(0 ,100, 95, 70);
-		JPanel info=new JPanel();
+		Count_1.setPreferredSize(new Dimension(90, 90));
+		ImageIcon icon1=new ImageIcon("C:\\Users\\nguye\\eclipse-workspace\\Co_caro\\src\\Img\\left.png");
+		Image icon=icon1.getImage().getScaledInstance(90, 150,Image.SCALE_SMOOTH );
+		ImageIcon icon_one=new ImageIcon(icon);
+		JLabel img=new JLabel(icon_one);
+		img.setPreferredSize(new Dimension(90, 200));
+		JPanel info=new JPanel(new FlowLayout());
 		info.add(Name_1);
 		info.add(Count_1);
-		info.setPreferredSize(new Dimension(90,0));
+		info.add(img);
+		info.setPreferredSize(new Dimension(100,0));
 		
 		return info;
 	}
 	public JPanel Inf_2(String s, int dem)
 	{
 		Name_2=new JLabel(s, JLabel.CENTER);
-		Name_2.setBounds(0, 10, 95, 70);
+		Name_2.setPreferredSize(new Dimension(90, 80));
 		Count_2=new JLabel("Count  "+dem, JLabel.CENTER);
-		Count_2.setBounds(0 ,100, 95, 70);
-		JPanel info=new JPanel();
+		Count_2.setPreferredSize(new Dimension(90, 90));
+		ImageIcon icon1=new ImageIcon("C:\\Users\\nguye\\eclipse-workspace\\Co_caro\\src\\Img\\right.png");
+		Image icon=icon1.getImage().getScaledInstance(90, 150,Image.SCALE_SMOOTH );
+		ImageIcon icon_one=new ImageIcon(icon);
+		JLabel img=new JLabel(icon_one);
+		img.setPreferredSize(new Dimension(90, 200));
+		
+
+		JPanel info=new JPanel(new FlowLayout());
 		info.add(Name_2);
 		info.add(Count_2);
-		info.setPreferredSize(new Dimension(90,0));
+		info.add(img);
+		info.setPreferredSize(new Dimension(100,0));
 		
 		return info;
+	}
+	public JPanel Bottom() {
+//		button
+		JButton Remuse=new JButton("Remuse");
+		Remuse.setPreferredSize(new Dimension(120, 30));
+		Remuse.setFocusable(false);
+		JButton OutGame=new JButton("Thoát Game");
+		OutGame.setPreferredSize(new Dimension(120, 30));
+		OutGame.setFocusable(false);
+		OutGame.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				JOptionPane Option=new JOptionPane();
+				int a=Option.showConfirmDialog(Option,"Are you sure");
+        		System.out.println(a);
+        		if(a==0)
+        		{
+        			System.exit(0);
+        		}
+			}
+		});
+		JPanel bottom=new JPanel(new FlowLayout());
+		
+		bottom.add(Remuse);
+		bottom.add(Title());
+		bottom.add(OutGame);
+		bottom.setPreferredSize(new Dimension(0, 60));
+		return bottom;
 	}
 	public JLabel Title()
 	{
@@ -155,7 +179,7 @@ public class Game_Main extends JPanel implements ActionListener {
 			title.setForeground(Color.red);
 		}
 		title.setFont(f1);
-		title.setPreferredSize(new Dimension(0, 60));
+		title.setPreferredSize(new Dimension(200, 60));
 		return title;
 	}
 	public JPanel ShowButton()
@@ -183,6 +207,7 @@ public class Game_Main extends JPanel implements ActionListener {
 		}
 		return Caro;
 	}
+	
 	/*
 	 * Check
 	 */
@@ -254,15 +279,12 @@ public class Game_Main extends JPanel implements ActionListener {
 			Count_2.setText("Count "+demO);
 		}
 	}
-	
 	/*
 	 * Constructor
 	 */
 	public Game_Main() {
 		
 		setLayout(new BorderLayout());
-//		add(this.Login(), BorderLayout.CENTER);
-//
 		JLabel Content=new JLabel("Wellcome To My Game", JLabel.CENTER);
 		Font f1=new Font(Font.SANS_SERIF, Font.BOLD, 25);
 		Content.setPreferredSize(new Dimension(0, 60));
@@ -271,7 +293,8 @@ public class Game_Main extends JPanel implements ActionListener {
 		add(ShowButton(), BorderLayout.CENTER);
 		add(Inf_1("Người Chơi 1", demX), BorderLayout.WEST);
 		add(Inf_2("Người Chơi 2", demO), BorderLayout.EAST);
-		add(Title(), BorderLayout.SOUTH);
+		add(Bottom(), BorderLayout.SOUTH);
+		
 	}
 
 }
