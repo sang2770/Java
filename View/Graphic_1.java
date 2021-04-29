@@ -5,9 +5,11 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.jar.Attributes.Name;
 
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -16,27 +18,10 @@ import javax.swing.JTextField;
 
 import CaroGame.Constants;
 
-public class Graphic_1 extends JFrame implements ActionListener {
-
-	public int width=Constants.width;
-	public int height=Constants.height;
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
-	}
-	public Graphic_1() {
-		super("Game");
-		setLayout(new BorderLayout()); 
-		add(new Game_Main(), BorderLayout.CENTER);
-		setSize(width, height);  
-		setVisible(true);  
-		setLocationRelativeTo(null);
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);  
-		
-	}
+public class Graphic_1   {
 	public static void main(String[] arg)
 	{
-		JFrame frame=new  Graphic_1();
+		Game_Main aGame_Main=new Game_Main();
 	}
 	
 	

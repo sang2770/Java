@@ -15,24 +15,27 @@ import java.awt.event.ActionListener;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
 
 import CaroGame.Constants;
 import CaroGame.Game;
 import CaroGame.Node;
 
-public class Game_Main extends JPanel implements ActionListener {
+public class Game_Main extends JFrame implements ActionListener {
 	private int width=Constants.width;
 	private int height=Constants.height;
 	private int GameSize=Constants.game_size;
 	private int dem=0, demX=0, demO=0;
 	public JButton[][] list_btn=new JButton[GameSize][GameSize];
-	JLabel title=null;
-	Game game=new Game();
-	JLabel Name_1=null, Name_2=null, Count_1=null,Count_2=null;
+	private JLabel title=null;
+	private Game game=new Game();
+	private JLabel Name_1=null, Name_2=null, Count_1=null,Count_2=null;
+	private JDialog a=null;
 	public JLabel getName_1() {
 		return Name_1;
 	}
@@ -108,7 +111,10 @@ public class Game_Main extends JPanel implements ActionListener {
 		JLabel img=new JLabel(icon_one);
 		img.setPreferredSize(new Dimension(90, 200));
 		JPanel info=new JPanel(new FlowLayout());
+		JLabel X=new JLabel("( X )", JLabel.CENTER);
+		X.setPreferredSize(new Dimension(90, 20));
 		info.add(Name_1);
+		info.add(X);
 		info.add(Count_1);
 		info.add(img);
 		info.setPreferredSize(new Dimension(100,0));
@@ -127,9 +133,11 @@ public class Game_Main extends JPanel implements ActionListener {
 		JLabel img=new JLabel(icon_one);
 		img.setPreferredSize(new Dimension(90, 200));
 		
-
+		JLabel O=new JLabel("( O )", JLabel.CENTER);
+		O.setPreferredSize(new Dimension(90, 20));
 		JPanel info=new JPanel(new FlowLayout());
 		info.add(Name_2);
+		info.add(O);
 		info.add(Count_2);
 		info.add(img);
 		info.setPreferredSize(new Dimension(100,0));
@@ -138,9 +146,18 @@ public class Game_Main extends JPanel implements ActionListener {
 	}
 	public JPanel Bottom() {
 //		button
-		JButton Remuse=new JButton("Remuse");
+		JButton Remuse=new JButton("Pause");
 		Remuse.setPreferredSize(new Dimension(120, 30));
 		Remuse.setFocusable(false);
+		Remuse.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				JOptionPane Option=new JOptionPane();
+				int a=Option.showConfirmDialog(null,"You want to Pause and exit Game");
+			}
+		});
 		JButton OutGame=new JButton("Thoát Game");
 		OutGame.setPreferredSize(new Dimension(120, 30));
 		OutGame.setFocusable(false);
@@ -150,7 +167,7 @@ public class Game_Main extends JPanel implements ActionListener {
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
 				JOptionPane Option=new JOptionPane();
-				int a=Option.showConfirmDialog(Option,"Are you sure");
+				int a=Option.showConfirmDialog(Option,"Are you  want to quit the Game");
         		System.out.println(a);
         		if(a==0)
         		{
@@ -279,6 +296,12 @@ public class Game_Main extends JPanel implements ActionListener {
 			Count_2.setText("Count "+demO);
 		}
 	}
+	public void UpdateName(String a, String b)
+	{
+		Name_1.setText(a);
+		Name_2.setText(b);
+	}
+	
 	/*
 	 * Constructor
 	 */
@@ -294,7 +317,11 @@ public class Game_Main extends JPanel implements ActionListener {
 		add(Inf_1("Người Chơi 1", demX), BorderLayout.WEST);
 		add(Inf_2("Người Chơi 2", demO), BorderLayout.EAST);
 		add(Bottom(), BorderLayout.SOUTH);
-		
+		setSize(width, height);  
+		setVisible(true);  
+		setLocationRelativeTo(null);
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		a= new View_user(this, "Notification", false);
 	}
 
 }
