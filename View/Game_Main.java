@@ -1,327 +1,258 @@
 package View;
 
 import java.awt.BorderLayout;
-import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
-import java.awt.GridLayout;
-import java.awt.Image;
-import java.awt.Insets;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.io.IOException;
 
-import javax.swing.BoxLayout;
-import javax.swing.ImageIcon;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JTextField;
 
+import Audio.Music_background;
 import CaroGame.Constants;
 import CaroGame.Game;
 import CaroGame.Node;
 
-public class Game_Main extends JFrame implements ActionListener {
-	private int width=Constants.width;
-	private int height=Constants.height;
-	private int GameSize=Constants.game_size;
-	private int dem=0, demX=0, demO=0;
-	public JButton[][] list_btn=new JButton[GameSize][GameSize];
-	private JLabel title=null;
-	private Game game=new Game();
-	private JLabel Name_1=null, Name_2=null, Count_1=null,Count_2=null;
-	private JDialog a=null;
-	public JLabel getName_1() {
-		return Name_1;
-	}
-	public void setName_1(JLabel name_1) {
-		Name_1 = name_1;
-	}
-	public JLabel getName_2() {
-		return Name_2;
-	}
-	public void setName_2(JLabel name_2) {
-		Name_2 = name_2;
-	}
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
-			String[] test=e.getActionCommand().split("-");
-			int a=Integer.parseInt(test[0]);
-			int b=Integer.parseInt(test[1]);
-			if(game.checkStatus(a, b)==true)
-			{
-				if(dem%2==0) {   // đếm chẵn thì X đánh
-					list_btn[a][b].setForeground(Color.BLUE);
-					dem++;
-					title.setText("Lượt O Đánh");
-					title.setForeground(Color.red);
-					check(game, 1,"X", a, b);
-				}
-				else { 			// Đếm lẻ thì O đánh
-					list_btn[a][b].setForeground(Color.RED);
-					dem++;
-					title.setText("Lượt X Đánh");
-					title.setForeground(Color.blue);
-					check(game, 2,"O", a, b);
-					
-				}
-				System.out.println("actiond"+dem);
-			}
+public class Game_Main extends JFrame {
+	private int width = Constants.width;
+	private int height = Constants.height;
+	private int GameSize = Constants.game_size;
+	public JButton[][] list_btn;
+	private JLabel title = null;
+	private Game game = new Game();
 
+	private JLabel Name_1 = null, Name_2 = null, Count_1 = null, Count_2 = null;
+	private JDialog a = null;
+	private North Content;
+	private West Inf_1;
+	private East Inf_2;
+	private Center center;
+	private int dem , demX, demO;
+	private int checkTitle=0;
+	Music_background Audio, Click, Appl;
+	public Game getGame() {
+		return game;
 	}
-	/*
-	 * User
-	 */
-	public JPanel Button()
-	{
-		JPanel Button=new JPanel(new FlowLayout(FlowLayout.CENTER));
-		JButton a=new JButton("Vào game");
-		a.setPreferredSize(new Dimension(120, 40));
-		a.setActionCommand("Ingame");
-		JButton b=new JButton("Thoát game");
-		b.setPreferredSize(new Dimension(120, 40));
-		b.setActionCommand("Outgame");;
-		a.addActionListener(this);
-		b.addActionListener(this);
-		a.setFocusable(false);
-		b.setFocusable(false);
-		Button.add(a);
-		Button.add(b);
-		Button.setPreferredSize(new Dimension(width, 100));
-		return Button;
+
+	public void setGame(Game game) {
+		this.game = game;
 	}
-	/*
-	 * Main
-	 */
-	public JPanel Inf_1(String s, int dem)
-	{
-		Name_1=new JLabel(s, JLabel.CENTER);
-		Name_1.setPreferredSize(new Dimension(90, 80));
-		Count_1=new JLabel("Count  "+dem, JLabel.CENTER);
-		Count_1.setPreferredSize(new Dimension(90, 90));
-		ImageIcon icon1=new ImageIcon("C:\\Users\\nguye\\eclipse-workspace\\Co_caro\\src\\Img\\left.png");
-		Image icon=icon1.getImage().getScaledInstance(90, 150,Image.SCALE_SMOOTH );
-		ImageIcon icon_one=new ImageIcon(icon);
-		JLabel img=new JLabel(icon_one);
-		img.setPreferredSize(new Dimension(90, 200));
-		JPanel info=new JPanel(new FlowLayout());
-		JLabel X=new JLabel("( X )", JLabel.CENTER);
-		X.setPreferredSize(new Dimension(90, 20));
-		info.add(Name_1);
-		info.add(X);
-		info.add(Count_1);
-		info.add(img);
-		info.setPreferredSize(new Dimension(100,0));
-		
-		return info;
+
+	public JLabel Gettitle() {
+		return title;
 	}
-	public JPanel Inf_2(String s, int dem)
-	{
-		Name_2=new JLabel(s, JLabel.CENTER);
-		Name_2.setPreferredSize(new Dimension(90, 80));
-		Count_2=new JLabel("Count  "+dem, JLabel.CENTER);
-		Count_2.setPreferredSize(new Dimension(90, 90));
-		ImageIcon icon1=new ImageIcon("C:\\Users\\nguye\\eclipse-workspace\\Co_caro\\src\\Img\\right.png");
-		Image icon=icon1.getImage().getScaledInstance(90, 150,Image.SCALE_SMOOTH );
-		ImageIcon icon_one=new ImageIcon(icon);
-		JLabel img=new JLabel(icon_one);
-		img.setPreferredSize(new Dimension(90, 200));
-		
-		JLabel O=new JLabel("( O )", JLabel.CENTER);
-		O.setPreferredSize(new Dimension(90, 20));
-		JPanel info=new JPanel(new FlowLayout());
-		info.add(Name_2);
-		info.add(O);
-		info.add(Count_2);
-		info.add(img);
-		info.setPreferredSize(new Dimension(100,0));
-		
-		return info;
+
+	public void Settitle(JLabel title) {
+		this.title = title;
 	}
-	public JPanel Bottom() {
-//		button
-		JButton Remuse=new JButton("Pause");
-		Remuse.setPreferredSize(new Dimension(120, 30));
-		Remuse.setFocusable(false);
-		Remuse.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-				JOptionPane Option=new JOptionPane();
-				int a=Option.showConfirmDialog(null,"You want to Pause and exit Game");
-			}
-		});
-		JButton OutGame=new JButton("Thoát Game");
-		OutGame.setPreferredSize(new Dimension(120, 30));
-		OutGame.setFocusable(false);
-		OutGame.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-				JOptionPane Option=new JOptionPane();
-				int a=Option.showConfirmDialog(Option,"Are you  want to quit the Game");
-        		System.out.println(a);
-        		if(a==0)
-        		{
-        			System.exit(0);
-        		}
-			}
-		});
-		JPanel bottom=new JPanel(new FlowLayout());
-		
-		bottom.add(Remuse);
-		bottom.add(Title());
-		bottom.add(OutGame);
-		bottom.setPreferredSize(new Dimension(0, 60));
-		return bottom;
+
+	public int getDem() {
+		return dem;
 	}
-	public JLabel Title()
-	{
-		Font f1=new Font(Font.SERIF, Font.BOLD, 20);
-		if(dem%2==0)
+
+	public void setDem(int dem) {
+		this.dem = dem;
+	}
+
+	public int getCheckTitle() {
+		return checkTitle;
+	}
+
+	public void setCheckTitle(int checkTitle) {
+		this.checkTitle = checkTitle;
+	}
+	public JLabel Title() {
+		Font f1 = new Font(Font.SERIF, Font.BOLD, 20);
+		if(checkTitle==0)
 		{
-			title=new JLabel("Lượt X Đánh", JLabel.CENTER);
-			title.setForeground(Color.BLUE);
+			title = new JLabel("", JLabel.CENTER);
 		}
 		else {
-			title=new JLabel("Lượt O Đánh", JLabel.CENTER);
-			title.setForeground(Color.red);
-		}
+			if (dem % 2 == 0) {
+				title = new JLabel("Lượt X Đánh", JLabel.CENTER);
+				title.setForeground(Color.BLUE);
+			} else {
+				title = new JLabel("Lượt O Đánh", JLabel.CENTER);
+				title.setForeground(Color.red);
+			}
+		}	
 		title.setFont(f1);
 		title.setPreferredSize(new Dimension(200, 60));
 		return title;
 	}
-	public JPanel ShowButton()
-	{
-		
-		JPanel Caro=new JPanel(new GridLayout(Constants.game_size, Constants.game_size));
-		Caro.setBackground(Color.gray);
-		Font f1=new Font("MV Boli", Font.BOLD,15);
-		dem=(int)(Math.random()*2);
-		System.out.println("begin"+dem);
-		for(int i=0;i<GameSize;i++)
-		{
-			for(int j=0;j<GameSize;j++)
-			{
-				
-				list_btn[i][j]=new JButton("");;
-				list_btn[i][j].setFont(f1);
-				list_btn[i][j].setBackground(Color.lightGray);
-				list_btn[i][j].setActionCommand(i+"-"+j);
-				list_btn[i][j].setMargin(new Insets(0, 0, 0, 0));
-				list_btn[i][j].setFocusable(false);
-				list_btn[i][j].addActionListener(this);
-				Caro.add(list_btn[i][j]);	
-			}
-		}
-		return Caro;
-	}
-	
 	/*
 	 * Check
 	 */
-	public void check(Game game, int value, String s, int a, int b)
-	{
-		Node node=new Node(a, b, value, true);
+	public void check(Game game, int value, String s, int a, int b) throws IOException {
+		Node node = new Node(a, b, value, true);
 		game.setNode(node);
 		list_btn[a][b].setText(s);
-		if(game.checkWin(node)==true)
-		{
-			
-			JOptionPane obJOptionPane= new JOptionPane();
-			int res=obJOptionPane.showConfirmDialog(this, s+" Win !"+"\nMời Sang Hiệp "+(demO+demX+1));
-			
-			if(s.compareTo("X")==0)
-			{
+		int check=0;
+		if (game.checkWin(node) == true) {
+			Appl.Start();
+			JOptionPane obJOptionPane = new JOptionPane();
+			if (s.compareTo("X") == 0) {
 				demX++;
-				Endgame();
-				dem=0;
-				title.setText("Lượt X đánh");
-				title.setForeground(Color.blue);
-				Count_1.setText("Count "+demX);
-			}
-			else {
+				Inf_1.setDemX(demX);
+				obJOptionPane.showMessageDialog(this, "Hiêp " + (demX + demO) + ": " + Name_1.getText() + " Win");
+				 check++;
+				if (Endgame() == false) {
+					dem = 0;
+					title.setText("Lượt X đánh");
+					title.setForeground(Color.blue);
+					Count_1.setText("Count " + demX);
+					ShowBegin();
+				}
+
+			} else {
 				demO++;
-				Endgame();
-				dem=1;
-				title.setText("Lượt O đánh");
-				title.setForeground(Color.red);
-				Count_2.setText("Count "+demO);
-				
+				obJOptionPane.showMessageDialog(this, "Hiêp " + (demX + demO) + ": " + Name_2.getText() + " Win");
+				check++;
+				if (Endgame() == false) {
+					dem = 1;
+					title.setText("Lượt O đánh");
+					title.setForeground(Color.red);
+					Count_2.setText("Count " + demO);
+					ShowBegin();
+				}
+
 			}
-			if(res==0)
+			if(check!=0)
 			{
-				
-				ResetButton();
-				game.Reset();
+				Appl.Reset();
+				Appl.Pause();
 			}
-			System.out.println("check"+dem);
+			center.setDem(dem);
+			ResetButton();
+			game.Reset();
+			System.out.println("check" + dem);
 		}
 	}
-	public void ResetButton()
-	{
-		for(int i=0;i<GameSize;i++)
-		{
-			for(int j=0;j<GameSize;j++)
-			{
+
+	public void ResetButton() {
+		for (int i = 1; i <= GameSize; i++) {
+			for (int j = 1; j <= GameSize; j++) {
 				list_btn[i][j].setText("");
 			}
 		}
 	}
-	
-	public void Endgame()
-	{
-		JOptionPane Notify=new JOptionPane();
+
+	public boolean Endgame() throws IOException {
+		JOptionPane Notify = new JOptionPane();
+		int res = -1;
+		title.setText("");
+		if (demX == 2) {
+			res = Notify.showConfirmDialog(this,"Congratulations " + Name_1.getText() + " Win ! Bạn có muốn làm thêm Ván Game Nữa ?");
+			demO = 0;
+			demX = 0;
+			Count_1.setText("Count " + demX);
+			Count_2.setText("Count " + demO);
+		}
+		if (demO == 2) {
+			res = Notify.showConfirmDialog(this,"Congratulations " + Name_2.getText() + " Win ! Bạn có muốn làm thêm Ván Game Nữa ?");
+			demO = 0;
+			demX = 0;
+			Count_1.setText("Count " + demX);
+			Count_2.setText("Count " + demO);
+		}
+		if (res == 1) {
+			ExitGame();
+			return true;
+		}
+		if (res == 0) {
+
+			ResetGame();
+			return true;
+		}
+		return false;
+
+	}
+
+	public void UpdateName(String a, String b) {
+		if (a.isEmpty() == false)
+			Inf_1.getName_1().setText(a);
+		if (b.isEmpty() == false)
+			Inf_2.getName_2().setText(b);
+		ShowBegin();
+
+	}
+
+	public void ShowBegin() {
+		JOptionPane First = new JOptionPane();
+		if (dem % 2 == 0) {
+			First.showMessageDialog(this, "Hiệp " + (demO + demX + 1) + ":" + Name_1.getText() + " Đánh trước");
+		} else {
+			First.showMessageDialog(this, "Hiệp " + (demO + demX + 1) + ":" + Name_2.getText() + " Đánh trước");
+		}
+	}
+
+	public void ExitGame() {
+		JOptionPane Option = new JOptionPane();
 		
-		if(demX==2)
-		{
-			Notify.showConfirmDialog(this,"Congratulations "+ " X "+ " Win !");
-			demO=0; demX=0;
-			Count_1.setText("Count "+demX);
-			Count_2.setText("Count "+demO);
-		}
-		if(demO==2)
-		{
-			Notify.showConfirmDialog(this,"Congratulations "+ " O "+ " Win !");
-			demO=0; demX=0;
-			Count_1.setText("Count "+demX);
-			Count_2.setText("Count "+demO);
+		int a = Option.showConfirmDialog(Option, "Are you  want to quit the Game");
+		System.out.println(a);
+		if (a == 0) {
+			System.exit(0);
 		}
 	}
-	public void UpdateName(String a, String b)
-	{
-		Name_1.setText(a);
-		Name_2.setText(b);
+
+	public void ResetGame() throws IOException {
+		Audio.Reset();
+		Audio.Pause();
+		ResetButton();
+		game.Reset();
+		dem = (int) (Math.random() * 2);
+		center.setDem(dem);
+		a = new View_user(this, "Notification", false, Audio);
 	}
-	
+
 	/*
 	 * Constructor
 	 */
-	public Game_Main() {
-		
+	public Game_Main() throws UnsupportedAudioFileException, IOException, LineUnavailableException {
+		Audio=new Music_background(Constants.Music_Main);
+		Click=new Music_background(Constants.Music_Click);
+		Appl =new Music_background(Constants.Music_App);
 		setLayout(new BorderLayout());
-		JLabel Content=new JLabel("Wellcome To My Game", JLabel.CENTER);
-		Font f1=new Font(Font.SANS_SERIF, Font.BOLD, 25);
-		Content.setPreferredSize(new Dimension(0, 60));
-		Content.setFont(f1);
-		add(Content, BorderLayout.NORTH);
-		add(ShowButton(), BorderLayout.CENTER);
-		add(Inf_1("Người Chơi 1", demX), BorderLayout.WEST);
-		add(Inf_2("Người Chơi 2", demO), BorderLayout.EAST);
-		add(Bottom(), BorderLayout.SOUTH);
-		setSize(width, height);  
-		setVisible(true);  
+//		North
+		Content = new North();
+		add(Content.getN(), BorderLayout.NORTH);
+//		Center
+		center = new Center(this,Click);
+		list_btn = center.getList_btn();
+		add(center.showButton(), BorderLayout.CENTER);
+//		West
+		Inf_1 = new West(this, "Người chơi 1", demX, "X", Color.blue, 0);
+		Name_1 = Inf_1.getName_1();
+		Count_1 = Inf_1.getCount_1();
+		demX = Inf_1.getDemX();
+		add(Inf_1.getInf(), BorderLayout.WEST);
+//		East
+		Inf_2 = new East(this, "Người chơi 2", demX, "O", Color.red, 0);
+		demO = Inf_2.getDemO();
+		Name_2 = Inf_2.getName_2();
+		Count_2 = Inf_2.getCount_2();
+		add(Inf_2.getInf(), BorderLayout.EAST);
+//		Bottom
+		South Bottom = new South(this);
+		add(Bottom.getBottom(), BorderLayout.SOUTH);
+
+		setSize(width, height);
+		setVisible(true);
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		a= new View_user(this, "Notification", false);
+		
+		
+		a = new View_user(this, "Notification", false, Audio);
+		System.out.println(dem);
 	}
 
 }

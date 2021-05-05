@@ -9,15 +9,31 @@ public class Game {
 
 	public Game() {
 		int game_size=Constants.game_size;
-		game= new Node[game_size][game_size];
-		for (int i = 0; i < game_size; i++) {
-			for (int j = 0; j < game_size; j++) {
+		game= new Node[game_size+2][game_size+2];
+		for (int i = 1; i <= game_size; i++) {
+			for (int j = 1; j <= game_size; j++) {
 				Node node =new Node(i,j, 0, false);
 				this.game[i][j] = node;
 			}
 		}
+		for(int i=0;i<=game_size+1;i++)
+		{
+			Node node = new Node(0,i, 3, false);
+			this.game[0][i] = node;
+			Node node_1 =new Node(game_size+1,i, 0, false);
+			this.game[game_size+1][i] = node;
+		}
+		for(int i=0;i<=game_size+1;i++)
+		{
+			Node node = new Node(i, 0, 3, false);
+			this.game[i][0] = node;
+			Node node_1 =new Node(i,game_size+1, 0, false);
+			this.game[i][game_size+1] = node;
+		}
+			
+		
 	}
-
+	
 	public Node[][] getGame() {
 		return game;
 	}
@@ -62,25 +78,30 @@ public class Game {
 	}
 	public boolean checkCol(Node node)
 	{
+		int CheckFalse=0;
 		int row=node.getRow();
 		int col=node.getCol();
 		int value=node.getValue();
 		int dem=0, r=row, c=col;
 		int size=Constants.game_size;
-		while(c<size && getNode(row, c).getValue()==value)
+		while(getNode(row, c).getValue()==value && getNode(row, c).getValue()!=3)
 		{
 			dem++;
 			c++;
 			
 		}
+		if(getNode(row, c).getValue()!=value && getNode(row, c).getValue()!=0 && getNode(row, c).getValue()!=3 )
+			CheckFalse++;
 		c=col-1;
-		while(c>=0 && this.getNode(row, c).getValue()==value)
+		while(getNode(row, c).getValue()!=3 && this.getNode(row, c).getValue()==value)
 		{
 			dem++;
 			c--;
 			
 		}
-		if(dem>4)
+		if(getNode(row, c).getValue()!=3 && getNode(row, c).getValue()!=value && getNode(row, c).getValue()!=0 )
+			CheckFalse++;
+		if(dem>4 && CheckFalse!=2)
 		{
 			return true;
 		}
@@ -88,26 +109,31 @@ public class Game {
 	}
 	public boolean checkRow(Node node)
 	{
+		int CheckFalse=0;
 		int row=node.getRow();
 		int col=node.getCol();
 		int value=node.getValue();
 		int dem=0, r=row, c=col;
 		int size=Constants.game_size;
 		// check hang
-		while(r<size && getNode(r, col).getValue()==value)
+		while(getNode(r, col).getValue()!=3 && getNode(r, col).getValue()==value)
 		{
 			dem++;
 			r++;
 			
 		}
+		if(getNode(r, col).getValue()!=3 && getNode(r, col).getValue()!=value && getNode(r, col).getValue()!=0 )
+			CheckFalse++;
 		r=row-1;
-		while(r>=0 &&  this.getNode(r, col).getValue()==value)
+		while(getNode(r, col).getValue()!=3 &&  this.getNode(r, col).getValue()==value)
 		{
 			dem++;
 			r--;
 			
 		}
-		if(dem>4)
+		if(getNode(r, col).getValue() !=3 && getNode(r, col).getValue()!=value && getNode(r, col).getValue()!=0 )
+			CheckFalse++;
+		if(dem>4 && CheckFalse!=2)
 		{
 			return true;
 		}
@@ -115,43 +141,51 @@ public class Game {
 	}
 	public boolean checkCross1(Node node)
 	{
+		int CheckFalse=0;
 		int row=node.getRow();
 		int col=node.getCol();
 		int value=node.getValue();
 		int dem=0, r=row , c=col;
-		int size=Constants.game_size;
-		while(c<size && r<size && this.getNode(r, c).getValue()==value)
+		while(getNode(r, c).getValue()!=3 &&  getNode(r, c).getValue()==value)
 		{
 			dem++; c++; r++;
-			
 		}
+		if(getNode(r, c).getValue()!=3 && getNode(r, c).getValue()!=value && getNode(r, c).getValue()!=0 )
+			CheckFalse++;
 		r=row-1; c=col-1;
-		while(c>=0 && r>=0 && this.getNode(r, c).getValue()==value)
+		while(getNode(r, c).getValue()!=3 && this.getNode(r, c).getValue()==value)
 		{
 			dem++; c--; r--;
 		}
-		if(dem>4)
+		if(getNode(r, c).getValue()!=3 && getNode(r, c).getValue()!=value && getNode(r, c).getValue()!=0 )
+			CheckFalse++;
+		if(dem>4 && CheckFalse!=2)
 		{
 			return true;
 		}
 		return false;
 	}
 	public boolean checkCross2(Node node) {
+		int CheckFalse=0;
 		int row=node.getRow();
 		int col=node.getCol();
 		int value=node.getValue();
 		int dem=0, r=row , c=col;
-		int size=Constants.game_size;
-		while(c<size && r>=0 && this.getNode(r, c).getValue()==value)
+		while(getNode(r, c).getValue()!=3 && getNode(r, c).getValue()==value)
 		{
 			dem++; c++; r--;
 		}
-		r=row-1; c=col-1;
-		while(c>=0 && r>=0 && r<size && this.getNode(r, c).getValue()==value)
+		if(getNode(r, c).getValue()!=3 && getNode(r, c).getValue()!=value && getNode(r, c).getValue()!=0 )
+			CheckFalse++;
+		r=row+1; c=col-1;
+		while(getNode(r, c).getValue() !=3 && this.getNode(r, c).getValue()==value)
 		{
 			dem++; c--; r++;
 		}
-		if(dem>4)
+		if(getNode(r, c).getValue()!=3 && getNode(r, c).getValue()!=value && getNode(r, c).getValue()!=0 )
+			CheckFalse++;
+		System.out.println(dem);
+		if(dem>4 && CheckFalse!=2)
 		{
 			return true;
 		}
@@ -165,8 +199,8 @@ public class Game {
 	}
 	public void Reset()
 	{
-		for (int i = 0; i < Constants.game_size; i++) {
-			for (int j = 0; j < Constants.game_size; j++) {
+		for (int i = 1; i <= Constants.game_size; i++) {
+			for (int j = 1; j < Constants.game_size; j++) {
 				Node node =new Node(i,j, 0, false);
 				this.game[i][j] = node;
 			}

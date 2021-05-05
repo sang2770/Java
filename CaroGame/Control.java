@@ -9,15 +9,15 @@ public class Control {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		Game game =new Game();
-		
+//		System.out.println(game);
 		Scanner cd= new Scanner(System.in);
 		while(true)
 		{
 			System.out.println(game);
 			System.out.println("Nhap cot:");
-			int col=cd.nextInt()-1;
+			int col=cd.nextInt();
 			System.out.println("Nhap hang");
-			int row=cd.nextInt()-1;
+			int row=cd.nextInt();
 			System.out.println("Nhap value");
 			int value=cd.nextInt();
 			Node node=new Node(row, col, value, true);
