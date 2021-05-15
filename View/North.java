@@ -12,14 +12,14 @@ import CaroGame.Constants;
 public class North {
 	private JPanel N;
 	private JLabel Content;
-	private Font f1=new Font(Font.SANS_SERIF, Font.BOLD, 25);
+	private Font f1=new Font("Tamoha", Font.BOLD, 25);
 	public North()
 	{
-		Content=new JLabel("Wellcome To My Game", JLabel.CENTER);
-		Content.setPreferredSize(new Dimension(Constants.width, 60));
+		Content=new JLabel("Wellcome To Caro Game", JLabel.CENTER);
+		Content.setPreferredSize(new Dimension(Constants.width, 50));
 		Content.setFont(f1);
 		N=new JPanel();
-		N.setPreferredSize(new Dimension(0, 60));
+		N.setPreferredSize(new Dimension(0, 50));
 		N.setLayout(new FlowLayout());
 		N.add(Content);
 	}

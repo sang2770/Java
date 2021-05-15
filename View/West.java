@@ -9,6 +9,8 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import CaroGame.Constants;
+
 public class West {
 	private JPanel Inf;
 	private Game_Main game_Main;
@@ -31,7 +33,7 @@ public class West {
 		Name_1.setPreferredSize(new Dimension(90, 80));
 		Count_1=new JLabel("Count  "+dem, JLabel.CENTER);
 		Count_1.setPreferredSize(new Dimension(90, 90));
-		ImageIcon icon1=new ImageIcon("C:\\Users\\nguye\\eclipse-workspace\\Co_caro\\src\\Img\\left.png");
+		ImageIcon icon1=new ImageIcon(Constants.ImgLeft);
 		Image icon=icon1.getImage().getScaledInstance(90, 150,Image.SCALE_SMOOTH );
 		ImageIcon icon_one=new ImageIcon(icon);
 		JLabel img=new JLabel(icon_one);

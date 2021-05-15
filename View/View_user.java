@@ -7,6 +7,9 @@ import java.awt.Font;
 import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.io.IOException;
 
 import javax.sound.sampled.LineUnavailableException;
@@ -21,6 +24,7 @@ import Audio.Music_background;
 import CaroGame.Constants;
 
 public class View_user extends JDialog implements ActionListener {
+	private static final long serialVersionUID = 655841510529897121L;
 	private JTextField User_1;
 	private JTextField User_2;
 	private int width=Constants.user_width;
@@ -87,6 +91,18 @@ public class View_user extends JDialog implements ActionListener {
 		setSize(width, height);
 		setVisible(true);
 		setLocationRelativeTo(null);
+		addWindowListener(new WindowAdapter() {
+
+			@Override
+			public void windowClosing(WindowEvent e) {
+				// TODO Auto-generated method stub
+				music.Start();
+				music.Loop();
+				super.windowClosing(e);
+				
+			}
+			
+		});
 	}
 
 
@@ -99,9 +115,11 @@ public class View_user extends JDialog implements ActionListener {
 			Main.UpdateName(User_1.getText(), User_2.getText());
 			Main.setCheckTitle(1);
 			music.Start();
+			music.Loop();
 		}
 		else {
 			setVisible(false);
 		}
+		
 	}
 }

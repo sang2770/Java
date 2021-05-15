@@ -1,7 +1,10 @@
 package View;
 
 import java.awt.Color;
+import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.Graphics;
 import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
@@ -10,8 +13,10 @@ import java.io.IOException;
 
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JPanel;
+import javax.swing.border.Border;
 
 import Audio.Music_background;
 import CaroGame.Constants;
@@ -30,8 +35,8 @@ public class Center implements ActionListener{
 
 	public JPanel showButton()
 	{
-		JPanel Caro=new JPanel(new GridLayout(Constants.game_size, Constants.game_size));
-		Caro.setBackground(Color.gray);
+		JPanel Caro=new JPanel(new GridLayout(Constants.game_size, Constants.game_size, 0, 0));
+		Caro.setBorder(null);
 		Font f1=new Font("MV Boli", Font.BOLD,15);
 		dem=(int)(Math.random()*2);
 		game_Main.setDem(dem);
@@ -46,7 +51,7 @@ public class Center implements ActionListener{
 				list_btn[i][j].setActionCommand(i+"-"+j);
 				list_btn[i][j].setMargin(new Insets(0, 0, 0, 0));
 				list_btn[i][j].setFocusable(false);
-				list_btn[i][j].addActionListener((ActionListener) this);
+				list_btn[i][j].addActionListener(this);
 				Caro.add(list_btn[i][j]);	
 			}
 		}

@@ -29,6 +29,7 @@ public class Music_background {
 		audio= AudioSystem.getAudioInputStream(file);
 		clip=AudioSystem.getClip();
 		clip.open(audio);
+		
 	}
 	public void Start()
 	{
@@ -65,7 +66,11 @@ public class Music_background {
 	}
 	public void Reset()
 	{
-		clip.setFramePosition(1);
+		clip.setMicrosecondPosition(0);
 		Start();
+	}
+	public void Loop()
+	{
+		clip.loop(Clip.LOOP_CONTINUOUSLY);
 	}
 }

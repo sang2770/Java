@@ -13,6 +13,7 @@ import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JMenuBar;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
@@ -22,22 +23,24 @@ import CaroGame.Game;
 import CaroGame.Node;
 
 public class Game_Main extends JFrame {
+	private static final long serialVersionUID = -3149873185501265833L;
 	private int width = Constants.width;
 	private int height = Constants.height;
 	private int GameSize = Constants.game_size;
 	public JButton[][] list_btn;
 	private JLabel title = null;
 	private Game game = new Game();
-
 	private JLabel Name_1 = null, Name_2 = null, Count_1 = null, Count_2 = null;
 	private JDialog a = null;
 	private North Content;
 	private West Inf_1;
 	private East Inf_2;
 	private Center center;
-	private int dem , demX, demO;
-	private int checkTitle=0;
+	private int dem, demX, demO;
+	private int checkTitle = 0;
+	private JMenuBar menu;
 	Music_background Audio, Click, Appl;
+
 	public Game getGame() {
 		return game;
 	}
@@ -69,13 +72,12 @@ public class Game_Main extends JFrame {
 	public void setCheckTitle(int checkTitle) {
 		this.checkTitle = checkTitle;
 	}
+
 	public JLabel Title() {
 		Font f1 = new Font(Font.SERIF, Font.BOLD, 20);
-		if(checkTitle==0)
-		{
+		if (checkTitle == 0) {
 			title = new JLabel("", JLabel.CENTER);
-		}
-		else {
+		} else {
 			if (dem % 2 == 0) {
 				title = new JLabel("Lượt X Đánh", JLabel.CENTER);
 				title.setForeground(Color.BLUE);
@@ -83,11 +85,12 @@ public class Game_Main extends JFrame {
 				title = new JLabel("Lượt O Đánh", JLabel.CENTER);
 				title.setForeground(Color.red);
 			}
-		}	
+		}
 		title.setFont(f1);
 		title.setPreferredSize(new Dimension(200, 60));
 		return title;
 	}
+
 	/*
 	 * Check
 	 */
@@ -95,7 +98,7 @@ public class Game_Main extends JFrame {
 		Node node = new Node(a, b, value, true);
 		game.setNode(node);
 		list_btn[a][b].setText(s);
-		int check=0;
+		int check = 0;
 		if (game.checkWin(node) == true) {
 			Appl.Start();
 			JOptionPane obJOptionPane = new JOptionPane();
@@ -103,7 +106,7 @@ public class Game_Main extends JFrame {
 				demX++;
 				Inf_1.setDemX(demX);
 				obJOptionPane.showMessageDialog(this, "Hiêp " + (demX + demO) + ": " + Name_1.getText() + " Win");
-				 check++;
+				check++;
 				if (Endgame() == false) {
 					dem = 0;
 					title.setText("Lượt X đánh");
@@ -125,8 +128,7 @@ public class Game_Main extends JFrame {
 				}
 
 			}
-			if(check!=0)
-			{
+			if (check != 0) {
 				Appl.Reset();
 				Appl.Pause();
 			}
@@ -150,14 +152,16 @@ public class Game_Main extends JFrame {
 		int res = -1;
 		title.setText("");
 		if (demX == 2) {
-			res = Notify.showConfirmDialog(this,"Congratulations " + Name_1.getText() + " Win ! Bạn có muốn làm thêm Ván Game Nữa ?");
+			res = Notify.showConfirmDialog(this,
+					"Congratulations " + Name_1.getText() + " Win ! Bạn có muốn làm thêm Ván Game Nữa ?");
 			demO = 0;
 			demX = 0;
 			Count_1.setText("Count " + demX);
 			Count_2.setText("Count " + demO);
 		}
 		if (demO == 2) {
-			res = Notify.showConfirmDialog(this,"Congratulations " + Name_2.getText() + " Win ! Bạn có muốn làm thêm Ván Game Nữa ?");
+			res = Notify.showConfirmDialog(this,
+					"Congratulations " + Name_2.getText() + " Win ! Bạn có muốn làm thêm Ván Game Nữa ?");
 			demO = 0;
 			demX = 0;
 			Count_1.setText("Count " + demX);
@@ -196,14 +200,23 @@ public class Game_Main extends JFrame {
 
 	public void ExitGame() {
 		JOptionPane Option = new JOptionPane();
-		
-		int a = Option.showConfirmDialog(Option, "Are you  want to quit the Game");
+
+		int a = Option.showConfirmDialog(Option, "Do you  want to quit the Game");
 		System.out.println(a);
 		if (a == 0) {
 			System.exit(0);
 		}
 	}
-
+	public void NewGame() throws IOException {
+		JOptionPane noti=new JOptionPane();
+		int a=noti.showConfirmDialog(this, "Do you want to play  new Game");
+		if(a==0)
+		{
+			ResetGame();
+			Gettitle().setText("");
+		}
+		return;
+	}
 	public void ResetGame() throws IOException {
 		Audio.Reset();
 		Audio.Pause();
@@ -218,15 +231,16 @@ public class Game_Main extends JFrame {
 	 * Constructor
 	 */
 	public Game_Main() throws UnsupportedAudioFileException, IOException, LineUnavailableException {
-		Audio=new Music_background(Constants.Music_Main);
-		Click=new Music_background(Constants.Music_Click);
-		Appl =new Music_background(Constants.Music_App);
+		super();
+		Audio = new Music_background(Constants.Music_Main);
+		Click = new Music_background(Constants.Music_Click);
+		Appl = new Music_background(Constants.Music_App);
 		setLayout(new BorderLayout());
 //		North
 		Content = new North();
 		add(Content.getN(), BorderLayout.NORTH);
 //		Center
-		center = new Center(this,Click);
+		center = new Center(this, Click);
 		list_btn = center.getList_btn();
 		add(center.showButton(), BorderLayout.CENTER);
 //		West
@@ -244,15 +258,17 @@ public class Game_Main extends JFrame {
 //		Bottom
 		South Bottom = new South(this);
 		add(Bottom.getBottom(), BorderLayout.SOUTH);
-
+//		Main
+		menu=new Menu(this);
+		setTitle("Game Caro");
 		setSize(width, height);
 		setVisible(true);
 		setLocationRelativeTo(null);
+		setMinimumSize(new Dimension(580, 580));
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
-		
+//		Notification
 		a = new View_user(this, "Notification", false, Audio);
-		System.out.println(dem);
 	}
 
 }
