@@ -1,12 +1,15 @@
 package CaroGame;
 
+import java.security.KeyPair;
 import java.util.Arrays;
+import java.util.Stack;
 
 import javax.swing.plaf.TreeUI;
 
 public class Game {
 	private Node[][] game;
-
+	private boolean gomoku=true;
+	private Stack<Pair> S=new Stack<Pair>();
 	public Game() {
 		int game_size=Constants.game_size;
 		game= new Node[game_size+2][game_size+2];
@@ -54,6 +57,11 @@ public class Game {
 		Node node=this.getNode(row, col);
 		node.setValue(value);
 		node.setStatus(a.getStatus());
+		if(value!=0)
+		{
+			S.push(new Pair(row, col));
+		}
+		
 	}
 
 	@Override
@@ -90,7 +98,7 @@ public class Game {
 			c++;
 			
 		}
-		if(getNode(row, c).getValue()!=value && getNode(row, c).getValue()!=0 && getNode(row, c).getValue()!=3 )
+		if(gomoku && getNode(row, c).getValue()!=value && getNode(row, c).getValue()!=0 && getNode(row, c).getValue()!=3 )
 			CheckFalse++;
 		c=col-1;
 		while(getNode(row, c).getValue()!=3 && this.getNode(row, c).getValue()==value)
@@ -99,7 +107,7 @@ public class Game {
 			c--;
 			
 		}
-		if(getNode(row, c).getValue()!=3 && getNode(row, c).getValue()!=value && getNode(row, c).getValue()!=0 )
+		if(gomoku && getNode(row, c).getValue()!=3 && getNode(row, c).getValue()!=value && getNode(row, c).getValue()!=0 )
 			CheckFalse++;
 		if(dem>4 && CheckFalse!=2)
 		{
@@ -122,7 +130,7 @@ public class Game {
 			r++;
 			
 		}
-		if(getNode(r, col).getValue()!=3 && getNode(r, col).getValue()!=value && getNode(r, col).getValue()!=0 )
+		if(gomoku && getNode(r, col).getValue()!=3 && getNode(r, col).getValue()!=value && getNode(r, col).getValue()!=0 )
 			CheckFalse++;
 		r=row-1;
 		while(getNode(r, col).getValue()!=3 &&  this.getNode(r, col).getValue()==value)
@@ -131,7 +139,7 @@ public class Game {
 			r--;
 			
 		}
-		if(getNode(r, col).getValue() !=3 && getNode(r, col).getValue()!=value && getNode(r, col).getValue()!=0 )
+		if(gomoku && getNode(r, col).getValue() !=3 && getNode(r, col).getValue()!=value && getNode(r, col).getValue()!=0 )
 			CheckFalse++;
 		if(dem>4 && CheckFalse!=2)
 		{
@@ -150,14 +158,14 @@ public class Game {
 		{
 			dem++; c++; r++;
 		}
-		if(getNode(r, c).getValue()!=3 && getNode(r, c).getValue()!=value && getNode(r, c).getValue()!=0 )
+		if(gomoku && getNode(r, c).getValue()!=3 && getNode(r, c).getValue()!=value && getNode(r, c).getValue()!=0 )
 			CheckFalse++;
 		r=row-1; c=col-1;
 		while(getNode(r, c).getValue()!=3 && this.getNode(r, c).getValue()==value)
 		{
 			dem++; c--; r--;
 		}
-		if(getNode(r, c).getValue()!=3 && getNode(r, c).getValue()!=value && getNode(r, c).getValue()!=0 )
+		if(gomoku && getNode(r, c).getValue()!=3 && getNode(r, c).getValue()!=value && getNode(r, c).getValue()!=0 )
 			CheckFalse++;
 		if(dem>4 && CheckFalse!=2)
 		{
@@ -175,14 +183,14 @@ public class Game {
 		{
 			dem++; c++; r--;
 		}
-		if(getNode(r, c).getValue()!=3 && getNode(r, c).getValue()!=value && getNode(r, c).getValue()!=0 )
+		if(gomoku && getNode(r, c).getValue()!=3 && getNode(r, c).getValue()!=value && getNode(r, c).getValue()!=0 )
 			CheckFalse++;
 		r=row+1; c=col-1;
 		while(getNode(r, c).getValue() !=3 && this.getNode(r, c).getValue()==value)
 		{
 			dem++; c--; r++;
 		}
-		if(getNode(r, c).getValue()!=3 && getNode(r, c).getValue()!=value && getNode(r, c).getValue()!=0 )
+		if(gomoku && getNode(r, c).getValue()!=3 && getNode(r, c).getValue()!=value && getNode(r, c).getValue()!=0 )
 			CheckFalse++;
 		System.out.println(dem);
 		if(dem>4 && CheckFalse!=2)
@@ -206,6 +214,26 @@ public class Game {
 			}
 		}
 	}
+
+	public void setGomoku() {
+		this.gomoku = !gomoku;
+		System.out.println("gomoku"+gomoku);
+	}
+
+	public Pair getNode_back()
+	{
+		if(S.size()!=0)
+		{
+			Pair s1=S.peek();
+			S.pop();
+			int i=s1.getX(), j=s1.getY();
+			Node node_1=new Node(i, j, 0, false);
+			this.setNode(node_1);
+			return s1;
+		}
+		return null;
+	}
+	
 	
 	
 	

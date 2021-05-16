@@ -21,6 +21,7 @@ import Audio.Music_background;
 import CaroGame.Constants;
 import CaroGame.Game;
 import CaroGame.Node;
+import CaroGame.Pair;
 
 public class Game_Main extends JFrame {
 	private static final long serialVersionUID = -3149873185501265833L;
@@ -37,10 +38,13 @@ public class Game_Main extends JFrame {
 	private East Inf_2;
 	private Center center;
 	private int dem, demX, demO;
-	private int checkTitle = 0;
 	private JMenuBar menu;
-	Music_background Audio, Click, Appl;
-
+	private Music_background Audio, Click, Appl;
+	
+	public Music_background getAudio()
+	{
+		return Audio;
+	}
 	public Game getGame() {
 		return game;
 	}
@@ -64,27 +68,29 @@ public class Game_Main extends JFrame {
 	public void setDem(int dem) {
 		this.dem = dem;
 	}
-
-	public int getCheckTitle() {
-		return checkTitle;
-	}
-
-	public void setCheckTitle(int checkTitle) {
-		this.checkTitle = checkTitle;
+	public void ChangeTitle() {
+		
+		if (dem % 2 == 0) {
+			title.setText("Lượt X Đánh");
+			title.setForeground(Color.BLUE);
+			dem=0;
+		} else {
+			
+			title.setText("Lượt O Đánh");
+			dem=1;
+			title.setForeground(Color.red);
+		}
+		System.out.println(dem);
 	}
 
 	public JLabel Title() {
 		Font f1 = new Font(Font.SERIF, Font.BOLD, 20);
-		if (checkTitle == 0) {
+		if (dem % 2 == 0) {
 			title = new JLabel("", JLabel.CENTER);
+			
 		} else {
-			if (dem % 2 == 0) {
-				title = new JLabel("Lượt X Đánh", JLabel.CENTER);
-				title.setForeground(Color.BLUE);
-			} else {
-				title = new JLabel("Lượt O Đánh", JLabel.CENTER);
-				title.setForeground(Color.red);
-			}
+			title = new JLabel("", JLabel.CENTER);
+			
 		}
 		title.setFont(f1);
 		title.setPreferredSize(new Dimension(200, 60));
@@ -226,7 +232,29 @@ public class Game_Main extends JFrame {
 		center.setDem(dem);
 		a = new View_user(this, "Notification", false, Audio);
 	}
-
+	public void BackGame()
+	{
+		
+		Pair s1= game.getNode_back();
+		if(s1!=null)
+		{
+			list_btn[s1.getX()][ s1.getY()].setText("");
+			dem--;
+			center.setDem(dem);
+		}
+		
+		
+		Pair s2= game.getNode_back();
+		if(s2!=null)
+		{
+			list_btn[s2.getX()][ s2.getY()].setText("");
+			dem--;
+			center.setDem(dem);
+		}
+		
+		this.ChangeTitle();
+		System.out.println(dem);
+	}
 	/*
 	 * Constructor
 	 */

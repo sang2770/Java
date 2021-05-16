@@ -69,6 +69,7 @@ public class Center implements ActionListener{
 		if(game_Main.getGame().checkStatus(a, b)==true)
 		{
 			if(dem%2==0) {   // đếm chẵn thì X đánh
+				System.out.println("X"+dem);
 				list_btn[a][b].setForeground(Color.BLUE);
 				dem++;
 				game_Main.setDem(dem);
@@ -80,11 +81,11 @@ public class Center implements ActionListener{
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
-				System.out.println("X"+dem);
+				
 				
 			}
 			else { 			// Đếm lẻ thì O đánh
-				
+				System.out.println("O"+dem);
 				list_btn[a][b].setForeground(Color.RED);
 				dem++;
 				game_Main.setDem(dem);
@@ -96,7 +97,7 @@ public class Center implements ActionListener{
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
-				System.out.println("O"+dem);
+				
 				
 			}
 			System.out.println("actiond"+dem);

@@ -113,7 +113,7 @@ public class View_user extends JDialog implements ActionListener {
 		{
 			setVisible(false);
 			Main.UpdateName(User_1.getText(), User_2.getText());
-			Main.setCheckTitle(1);
+			Main.ChangeTitle();
 			music.Start();
 			music.Loop();
 		}
